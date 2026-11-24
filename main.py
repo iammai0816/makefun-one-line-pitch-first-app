@@ -3,6 +3,12 @@
 
 The program is deterministic: it always emits the same single line,
 the pitch itself, into entry.txt under MAKEFUN_OUTPUT_DIR.
+
+Entry for the make.fun competition "A Day of One-Line Pitches"
+(u-ronigrv-a-day-of-one-line-pitches-12cd9bb3): one sentence, under
+240 characters, pitched at a non-coder friend. Before writing, main()
+validates that PITCH is exactly one sentence and under 240 chars, so a
+bad edit to the text fails loudly instead of shipping a broken entry.
 """
 
 import os
@@ -15,6 +21,11 @@ PITCH = (
 
 
 def main() -> None:
+    # Guard: the entry must stay exactly one sentence under 240 chars.
+    assert len(PITCH) < 240, f"pitch too long: {len(PITCH)} chars"
+    assert PITCH.count(".") == 1 and PITCH.endswith("."), (
+        "pitch must be exactly one sentence ending with a period"
+    )
     output_dir = os.environ.get("MAKEFUN_OUTPUT_DIR", "/output")
     os.makedirs(output_dir, exist_ok=True)
     entry_path = os.path.join(output_dir, "entry.txt")
